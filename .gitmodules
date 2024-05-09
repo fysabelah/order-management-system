@@ -7,3 +7,6 @@
 [submodule "gateway"]
 	path = gateway
 	url = https://github.com/fysabelah/gateway.git
+[submodule "tracking-microservice"]
+	path = tracking-microservice
+	url = https://github.com/erickmatheusribeiro/tracking-microservice.git
