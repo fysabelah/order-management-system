@@ -1,3 +1,6 @@
 [submodule "ordering-microservice"]
 	path = ordering-microservice
 	url = https://github.com/fysabelah/ordering-microservice.git
+[submodule "registration-discovery-services"]
+	path = registration-discovery-services
+	url = https://github.com/fysabelah/registration-discovery-services.git
