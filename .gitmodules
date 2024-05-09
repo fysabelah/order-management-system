@@ -10,3 +10,6 @@
 [submodule "tracking-microservice"]
 	path = tracking-microservice
 	url = https://github.com/erickmatheusribeiro/tracking-microservice.git
+[submodule "costumers-microservice"]
+	path = costumers-microservice
+	url = https://github.com/AydanAmorim/costumers-microservice.git
