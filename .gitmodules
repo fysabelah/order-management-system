@@ -1,0 +1,3 @@
+[submodule "ordering-microservice"]
+	path = ordering-microservice
+	url = https://github.com/fysabelah/ordering-microservice.git
