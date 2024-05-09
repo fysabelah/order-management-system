@@ -13,3 +13,6 @@
 [submodule "costumers-microservice"]
 	path = costumers-microservice
 	url = https://github.com/AydanAmorim/costumers-microservice.git
+[submodule "products-microservice"]
+	path = products-microservice
+	url = https://github.com/DFaccio/products-microservice.git
