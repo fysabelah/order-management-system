@@ -1,0 +1,7 @@
+CREATE DATABASE "order";
+
+CREATE DATABASE customers;
+
+CREATE DATABASE products;
+
+CREATE DATABASE logistics;

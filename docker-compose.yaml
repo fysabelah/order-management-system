@@ -1,0 +1,73 @@
+services:
+  server-discovery:
+    image: registration-discovery-services:1.0.0
+    build:
+      context: ./registration-discovery-services
+    container_name: server-discovery
+    ports:
+      - 7070:7070
+    restart: unless-stopped
+    networks:
+      - order-management-network
+
+  gateway:
+    image: gateway:1.0.0
+    build:
+      context: ./gateway
+    container_name: gateway
+    ports:
+      - 7071:7071
+    restart: unless-stopped
+    networks:
+      - order-management-network
+    environment:
+      EUREKA_SERVER: ${EUREKA_SERVER}
+    depends_on:
+      - server-discovery
+
+  rabbitMQ:
+    image: rabbitmq:3.13-management
+    container_name: rabbitMQ
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    ports:
+      - 7072:5672
+      - 7073:15672
+    networks:
+      - order-management-network
+
+  postgres:
+    image: postgres:16.0
+    container_name: postgres
+    restart: unless-stopped
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - order-management:/var/lib/postgresql/data
+    networks:
+      - order-management-network
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+    ports:
+      - 7074:5432
+
+  pgadmin:
+    image: dpage/pgadmin4:8.0
+    container_name: pgadmin
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 7075:80
+    depends_on:
+      - postgres
+    networks:
+      - order-management-network
+networks:
+  order-management-network:
+
+volumes:
+  order-management:
