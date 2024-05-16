@@ -66,6 +66,27 @@ services:
       - postgres
     networks:
       - order-management-network
+
+  customers:
+    image: customer-service:1.0.0
+    build:
+      context: ./costumers-microservice
+    container_name: customer-service
+    ports:
+      - 7076:7076
+    restart: unless-stopped
+    networks:
+      - order-management-network
+    environment:
+      PROFILE: ${PROFILE}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE: customers
+    depends_on:
+      - postgres
+      - gateway
+      - server-discovery
 networks:
   order-management-network:
 
