@@ -1,6 +1,6 @@
 services:
   server-discovery:
-    image: registration-discovery-services:1.0.0
+    image: registration-discovery-services:1.0.1
     build:
       context: ./registration-discovery-services
     container_name: server-discovery
@@ -67,7 +67,7 @@ services:
     networks:
       - order-management-network
 
-  customers:
+  customer-service:
     image: customer-service:1.0.0
     build:
       context: ./costumers-microservice
@@ -87,6 +87,76 @@ services:
       - postgres
       - gateway
       - server-discovery
+
+  order-service:
+    image: order-service:1.0.0
+    build:
+      context: ./ordering-microservice
+    container_name: order-service
+    restart: unless-stopped
+    networks:
+      - order-management-network
+    environment:
+      PROFILE: ${PROFILE}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE: order
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - postgres
+      - gateway
+      - server-discovery
+      - rabbitMQ
+    ports:
+      - 7078:7078
+
+  inventory-service:
+    image: inventory-service:1.0.0
+    build:
+      context: ./products-microservice
+    container_name: inventory-service
+    restart: unless-stopped
+    networks:
+      - order-management-network
+    environment:
+      PROFILE: ${PROFILE}
+      POSTGRES_USERNAME: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE: products
+      DATABASE_HOST: ${DATABASE_HOST}
+    ports:
+      - 7077:7077
+    depends_on:
+      - postgres
+      - gateway
+      - server-discovery
+
+  logistics-service:
+    image: logistics-service:1.0.0
+    build:
+      context: ./tracking-microservice
+    container_name: logistics-service
+    restart: unless-stopped
+    networks:
+      - order-management-network
+    environment:
+      PROFILE: ${PROFILE}
+      POSTGRES_USERNAME: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE: logistics
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+    depends_on:
+      - postgres
+      - gateway
+      - server-discovery
+      - rabbitMQ
+    ports:
+      - 7079:7079
+
 networks:
   order-management-network:
 
