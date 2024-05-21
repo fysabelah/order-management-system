@@ -67,6 +67,28 @@ Portanto, no compose deixaremos aberto a requisição, mas também permitiremos 
 
 ## Como executar
 
+Crie o arquivo .env no diretório root to projeto com as chaves abaixo. Os valores podem se preechidos como preferir, com exceção do PROFILE, DATABASE_HOST e EUREKA_SERVER devido ao application.propeties de alguns serviços.
+
+```
+PROFILE=prod
+
+# Eureka
+EUREKA_SERVER=http://server-discovery:7070/eureka
+
+# RabbitMQ
+RABBITMQ_USER=coloque_aqui_usuario_mensageria
+RABBITMQ_PASS=coloque_aqui_senha_mensageria
+
+# PostgreSQL
+DATABASE_USERNAME=coloque_aqui_usuario_banco
+DATABASE_PASSWORD=coloque_aqui_senha_banco
+DATABASE_HOST=postgres
+
+#PgAdmin
+PGADMIN_DEFAULT_EMAIL=coloque_aqui_email_pgadmin
+PGADMIN_DEFAULT_PASSWORD=coloque_aqui_senha_pgadmin
+```
+
 O projeto pode ser executado clonando este repositório e digitando o comando abaixo.
 
     docker compose up
