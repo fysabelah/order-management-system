@@ -71,35 +71,33 @@ do Gateway foi configurado diretamente no Swagger.
 1. Clone o repositório
 2. No diretório root do projeto, crie um arquivo .env
 
-   
-    PROFILE=prod
+       PROFILE=prod
 
-    # Eureka
-    EUREKA_SERVER=http://server-discovery:7070/eureka
-    
-    # RabbitMQ
-    RABBITMQ_USER=message_admin
-    RABBITMQ_PASS=senha_para_rabbitmq
-    
-    # PostgreSQL
-    DATABASE_USERNAME=postgres
-    DATABASE_PASSWORD=senha_para_postgre
-    DATABASE_HOST=postgres
-    
-    #PgAdmin
-    PGADMIN_DEFAULT_EMAIL=order@gmail.com
-    PGADMIN_DEFAULT_PASSWORD=senha_para_pgadmin
-    
-    # Gateway
-    CUSTOMER_ADDRESS=lb://customers-microservice
-    ORDER_ADDRESS=lb://ordering-microservice
-    LOGISTICS_ADDRESS=lb://tracking-microservice
-    INVENTORY_ADDRESS=lb://product-microservice
+       # Eureka
+       EUREKA_SERVER=http://server-discovery:7070/eureka
+       
+       # RabbitMQ
+       RABBITMQ_USER=message_admin
+       RABBITMQ_PASS=senha_para_rabbitmq
+       
+       # PostgreSQL
+       DATABASE_USERNAME=postgres
+       DATABASE_PASSWORD=senha_para_postgre
+       DATABASE_HOST=postgres
+       
+       #PgAdmin
+       PGADMIN_DEFAULT_EMAIL=order@gmail.com
+       PGADMIN_DEFAULT_PASSWORD=senha_para_pgadmin
+       
+       # Gateway
+       CUSTOMER_ADDRESS=lb://customers-microservice
+       ORDER_ADDRESS=lb://ordering-microservice
+       LOGISTICS_ADDRESS=lb://tracking-microservice
+       INVENTORY_ADDRESS=lb://product-microservice
 
 3. Execute o comando abaixo
-  
 
-    docker compose up
+       docker compose up
 
 Caso prefira, também é possível executá-los em uma IDE de sua preferência.
 
