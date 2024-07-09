@@ -35,7 +35,7 @@ O sistema consiste em 4 serviços, separados em: produto, clientes, pedidos e lo
 foi criada. Conforme o pedido avança de status, a reserva será confirmada.
   * Para simulação do pagamento, será validado pelo último número do cartão, conforme [mencionado aqui](https://github.com/fysabelah/ordering-microservice/tree/main).
   * Um pedido pode ser cancelado a qualquer momento, contato que não esteja entregue.
-    * Ele tentará cancelar entrega e atualizar o estoque dependendo do status atual.
+    * Ele tentará cancelar a entrega e atualizar o estoque dependendo do status atual.
   * O mapa de status segue conforme imagem abaixo.
   
   ![Mapa de Status](mapa-status.jpeg)
