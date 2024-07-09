@@ -1,18 +1,18 @@
 [submodule "ordering-microservice"]
 	path = ordering-microservice
-	url = https://github.com/fysabelah/ordering-microservice.git
+	url = https://github.com/fysabelah/ordering-microservice.git#main
 [submodule "registration-discovery-services"]
 	path = registration-discovery-services
-	url = https://github.com/fysabelah/registration-discovery-services.git
+	url = https://github.com/fysabelah/registration-discovery-services.git#main
 [submodule "gateway"]
 	path = gateway
-	url = https://github.com/fysabelah/gateway.git
+	url = https://github.com/fysabelah/gateway.git#main
 [submodule "tracking-microservice"]
 	path = tracking-microservice
-	url = https://github.com/erickmatheusribeiro/tracking-microservice.git
+	url = https://github.com/erickmatheusribeiro/tracking-microservice.git#main
 [submodule "costumers-microservice"]
 	path = costumers-microservice
-	url = https://github.com/AydanAmorim/costumers-microservice.git
+	url = https://github.com/AydanAmorim/costumers-microservice.git#main
 [submodule "products-microservice"]
 	path = products-microservice
-	url = https://github.com/DFaccio/products-microservice.git
+	url = https://github.com/DFaccio/products-microservice.git#main
