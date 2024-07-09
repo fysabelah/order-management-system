@@ -1,6 +1,6 @@
 services:
   server-discovery:
-    image: registration-discovery-services:1.0.1
+    image: registration-discovery-services:1.0.0
     build:
       context: ./registration-discovery-services
     container_name: server-discovery
@@ -22,6 +22,10 @@ services:
       - order-management-network
     environment:
       EUREKA_SERVER: ${EUREKA_SERVER}
+      CUSTOMER_ADDRESS: ${CUSTOMER_ADDRESS}
+      ORDER_ADDRESS: ${ORDER_ADDRESS}
+      LOGISTICS_ADDRESS: ${LOGISTICS_ADDRESS}
+      INVENTORY_ADDRESS: ${INVENTORY_ADDRESS}
     depends_on:
       - server-discovery
 
@@ -71,7 +75,7 @@ services:
     image: customer-service:1.0.0
     build:
       context: ./costumers-microservice
-    container_name: customer-service
+    container_name: customers-microservice
     ports:
       - 7076:7076
     restart: unless-stopped
@@ -92,7 +96,7 @@ services:
     image: order-service:1.0.0
     build:
       context: ./ordering-microservice
-    container_name: order-service
+    container_name: ordering-microservice
     restart: unless-stopped
     networks:
       - order-management-network
@@ -116,7 +120,7 @@ services:
     image: inventory-service:1.0.0
     build:
       context: ./products-microservice
-    container_name: inventory-service
+    container_name: product-microservice
     restart: unless-stopped
     networks:
       - order-management-network
@@ -137,7 +141,7 @@ services:
     image: logistics-service:1.0.0
     build:
       context: ./tracking-microservice
-    container_name: logistics-service
+    container_name: tracking-microservice
     restart: unless-stopped
     networks:
       - order-management-network

@@ -40,14 +40,17 @@ foi criada. Conforme o pedido avança de status, a reserva será confirmada.
   
   ![Mapa de Status](mapa-status.jpeg)
 
+
 ## Acesso a documentação
 
-Foi feito uso de um Gateway para comunicação dos serviços, para que apenas o mesmo fosse exposto.
-No entanto, por não ter sido possível centralizar o swagger-ui de todos os projetos no gateway, optamos por adicionar os dois servidores.
+Foi feito uso de um Gateway para comunicação dos serviços, para que assim toda a comunicação fosse realizada através do mesmo.
+No entanto, as portas de cada aplicação estão expostas e também podem ser acessadas através deste. Porém, apenas o servidor 
+do Gateway foi configurado diretamente no Swagger.
 
-Portanto, no compose deixaremos aberto a requisição, mas também permitiremos a configuração pelo gateway.
+    As portas foram mantidas expostas devido a não centralização do Swagger e facilidades caso seja necessário algum
+    desenvolvimento.
 
-  É possível ver todos serviços registrados em http://localhost:7070
+    Para acessar a documentação a aplicação precisa está executando.
 
 * Clientes
   * [Swagger-UI](http://localhost:7076/doc/customer-management.html)
@@ -63,32 +66,102 @@ Portanto, no compose deixaremos aberto a requisição, mas também permitiremos 
   * [Gateway](http://localhost:7071/order-management-system/tracking-microservice/documentation)
 
 
-    OBS.: O Swagger-UI não está funcionando ao utilizar o gateway. Porém, funciona no Postman.
-
 ## Como executar
 
-Crie o arquivo .env no diretório root to projeto com as chaves abaixo. Os valores podem se preechidos como preferir, com exceção do PROFILE, DATABASE_HOST e EUREKA_SERVER devido ao application.propeties de alguns serviços.
+1. Clone o repositório
+2. No diretório root do projeto, crie um arquivo .env
 
-```
-PROFILE=prod
+   
+    PROFILE=prod
 
-# Eureka
-EUREKA_SERVER=http://server-discovery:7070/eureka
+    # Eureka
+    EUREKA_SERVER=http://server-discovery:7070/eureka
+    
+    # RabbitMQ
+    RABBITMQ_USER=message_admin
+    RABBITMQ_PASS=senha_para_rabbitmq
+    
+    # PostgreSQL
+    DATABASE_USERNAME=postgres
+    DATABASE_PASSWORD=senha_para_postgre
+    DATABASE_HOST=postgres
+    
+    #PgAdmin
+    PGADMIN_DEFAULT_EMAIL=order@gmail.com
+    PGADMIN_DEFAULT_PASSWORD=senha_para_pgadmin
+    
+    # Gateway
+    CUSTOMER_ADDRESS=lb://customers-microservice
+    ORDER_ADDRESS=lb://ordering-microservice
+    LOGISTICS_ADDRESS=lb://tracking-microservice
+    INVENTORY_ADDRESS=lb://product-microservice
 
-# RabbitMQ
-RABBITMQ_USER=coloque_aqui_usuario_mensageria
-RABBITMQ_PASS=coloque_aqui_senha_mensageria
-
-# PostgreSQL
-DATABASE_USERNAME=coloque_aqui_usuario_banco
-DATABASE_PASSWORD=coloque_aqui_senha_banco
-DATABASE_HOST=postgres
-
-#PgAdmin
-PGADMIN_DEFAULT_EMAIL=coloque_aqui_email_pgadmin
-PGADMIN_DEFAULT_PASSWORD=coloque_aqui_senha_pgadmin
-```
-
-O projeto pode ser executado clonando este repositório e digitando o comando abaixo.
+3. Execute o comando abaixo
+  
 
     docker compose up
+
+Caso prefira, também é possível executá-los em uma IDE de sua preferência.
+
+É possível ver todos serviços registrados, considerando que nada foi alterado, na porta [7070](http://localhost:7070).
+
+### Novos desenvolvimento
+
+Para novos desenvolvimentos basta executar o projeto conforme mencionado acima. Considerando que irá executar o serviço
+localmente, altere a variável dentro da `Gateway` do arquivo conforme o serviço que irá alterar. 
+
+    O valor deve ser alterado antes da executação do passo 3. 
+
+* Cliente: http://host.docker.internal:7076
+* Pedido: http://host.docker.internal:7078
+* Produto: http://host.docker.internal:7077
+* Transporte: http://host.docker.internal:7077
+
+Exemplo: considerando que irá mexer no serviço de clientes, então: CUSTOMER_ADDRESS = http://host.docker.internal:7076,
+resultando:
+
+    PROFILE=prod
+
+    # Eureka
+    EUREKA_SERVER=http://server-discovery:7070/eureka
+    
+    # RabbitMQ
+    RABBITMQ_USER=message_admin
+    RABBITMQ_PASS=senha_para_rabbitmq
+    
+    # PostgreSQL
+    DATABASE_USERNAME=postgres
+    DATABASE_PASSWORD=senha_para_postgre
+    DATABASE_HOST=postgres
+    
+    #PgAdmin
+    PGADMIN_DEFAULT_EMAIL=order@gmail.com
+    PGADMIN_DEFAULT_PASSWORD=senha_para_pgadmin
+    
+    # Gateway
+    CUSTOMER_ADDRESS=http://host.docker.internal:7076
+    ORDER_ADDRESS=lb://ordering-microservice
+    LOGISTICS_ADDRESS=lb://tracking-microservice
+    INVENTORY_ADDRESS=lb://product-microservice
+
+### Curiosidades sobre o arquivo de configuração
+
+* PROFILE
+  * Necessário antentar-se caso seja alterado. Alguns dos serviços mudam suas configurações de acordo com este.
+  Para executar tudo em container, é recomendado `prod`. Também há o peril `dev`.
+* Eureka
+  * Este é o endereço do serviço que registra os serviços listados no gateway. Se ao menos um serviço irá executar em docker
+  deixe como está. 
+  * Serviços que não executam em docker usam localhost:7070. Mais informações de configuração no próprio projeto
+* RabbitMQ
+  * Usuário e senha para acesso ao RabbitMQ
+* PostgreSQL
+  * Usuário e senha para o Postgre
+* PgAdmin
+  * Usuário e senha para o PgAdmin
+* Gateway
+  * Dado a necessidade de desenvolvimento/debug, algum momento alguns serviços podem está sendo executados localmente e 
+  por isto as variáveis foram criadas.
+  * Quando tudo local ou tudo em docker, não há necessidade de alterar os valores. Porém, caso queira rodar local, basta
+  alterar o endereço do serviço conforme mencionado em novos desenvolvimentos.
+    * Dica: Execute `docker compose up` e pause o container que irá executar local
